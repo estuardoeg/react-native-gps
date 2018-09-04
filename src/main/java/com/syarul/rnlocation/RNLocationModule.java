@@ -30,15 +30,21 @@ public class RNLocationModule extends ReactContextBaseJavaModule{
     //The React Native Context
     ReactApplicationContext mReactContext;
 
-
     // Constructor Method as called in Package
     public RNLocationModule(ReactApplicationContext reactContext) {
         super(reactContext);
         // Save Context for later use
         mReactContext = reactContext;
 
-        locationManager = (LocationManager) mReactContext.getSystemService(Context.LOCATION_SERVICE);
-        mLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        try {
+            locationManager = (LocationManager) mReactContext.getSystemService(Context.LOCATION_SERVICE);
+        } catch(Exception e) {
+        }
+        try {
+            mLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception e) {
+        }
+
         }
 
 
@@ -53,6 +59,17 @@ public class RNLocationModule extends ReactContextBaseJavaModule{
         public void requestWhenInUseAuthorization(){
           Log.i(TAG, "Requesting authorization");
         }
+
+        private boolean canAccessLocation() {
+          return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+        }
+
+        private boolean hasPermission(String perm) {
+          return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
+        }
+
+        
+
         /*
          * Location Callback as called by JS
          */
