@@ -60,16 +60,6 @@ public class RNLocationModule extends ReactContextBaseJavaModule{
           Log.i(TAG, "Requesting authorization");
         }
 
-        private boolean canAccessLocation() {
-          return(hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
-        }
-
-        private boolean hasPermission(String perm) {
-          return(PackageManager.PERMISSION_GRANTED==checkSelfPermission(perm));
-        }
-
-        
-
         /*
          * Location Callback as called by JS
          */
